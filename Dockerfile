@@ -1,15 +1,16 @@
 FROM node:22-slim
 
-ENV NODE_ENV=production \
-    PORT=3000
+ENV PORT=3000
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 COPY . .
 RUN npm run build && mkdir -p /app/runtime
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 
