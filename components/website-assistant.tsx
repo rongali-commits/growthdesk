@@ -1,0 +1,25 @@
+'use client';
+
+import { SubmitEvent, useState } from 'react';
+import { Bot, CheckCircle2, MessageCircle, Send, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+type Message = { from: 'assistant' | 'visitor'; text: string };
+
+function answer(question: string) {
+  const text = question.toLowerCase();
+  if (text.includes('price') || text.includes('cost') || text.includes('quote')) return 'Every space is different, so we confirm a fixed quote after a few details. Home services typically start at $129 and office plans at $320 per month.';
+  if (text.includes('available') || text.includes('book') || text.includes('schedule')) return 'We currently have appointments available this week. Share the service and preferred date, and our team will confirm the best time.';
+  if (text.includes('office') || text.includes('commercial')) return 'Yes. Our office care plans include scheduled cleaning, supplies, quality checks, and one accountable service lead.';
+  if (text.includes('move')) return 'Our move-out service covers kitchens, bathrooms, floors, surfaces, and the final handover checklist. Add-ons are available for appliances and windows.';
+  return 'I can help with services, pricing, availability, or a fast quote. What would you like to know?';
+}
+
+export function WebsiteAssistant() {
+  const [open, setOpen] = useState(true); const [mode, setMode] = useState<'chat' | 'lead' | 'done'>('chat'); const [messages, setMessages] = useState<Message[]>([{ from: 'assistant', text: 'Hi, I’m Sunny. Ask about services, pricing, availability, or request a fast quote.' }]); const [question, setQuestion] = useState('');
+  function send(event: SubmitEvent<HTMLFormElement>) { event.preventDefault(); if (!question.trim()) return; const text = question.trim(); setMessages((items) => [...items, { from: 'visitor', text }, { from: 'assistant', text: answer(text) }]); setQuestion(''); }
+  async function submitLead(event: SubmitEvent<HTMLFormElement>) { event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); const response = await fetch('/api/leads', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...data, source: 'Website assistant' }) }); if (response.ok) setMode('done'); }
+  if (!open) return <Button onClick={() => setOpen(true)} className="fixed bottom-6 right-6 z-50 h-14 rounded-full px-5 shadow-2xl"><MessageCircle className="size-5" />Ask Sunny</Button>;
+  return <div className="fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-[380px] overflow-hidden rounded-3xl border border-white/10 bg-[#12392f] text-white shadow-[0_30px_80px_rgba(5,30,24,0.32)]"><div className="flex items-center gap-3 border-b border-white/10 p-4"><span className="grid size-10 place-items-center rounded-xl bg-[#f59b52] text-[#15392f]"><Bot className="size-5" /></span><div><p className="font-bold">Sunny · Northstar</p><p className="text-xs text-white/58">Ready to help</p></div><button onClick={() => setOpen(false)} className="ml-auto rounded-lg p-2 hover:bg-white/10" aria-label="Close assistant"><X className="size-4" /></button></div>{mode === 'chat' ? <><div className="h-[330px] space-y-3 overflow-y-auto bg-[#fbf2e6] p-4 text-[#17372f]">{messages.map((message, index) => <div key={index} className={`max-w-[86%] rounded-2xl p-3 text-sm leading-5 ${message.from === 'assistant' ? 'rounded-tl-sm bg-white shadow-sm' : 'ml-auto rounded-tr-sm bg-[#17453a] text-white'}`}>{message.text}</div>)}<button onClick={() => setMode('lead')} className="w-full rounded-xl border border-[#17453a]/15 bg-white p-3 text-left text-xs font-semibold text-[#17453a] hover:bg-[#f4f8f2]">Want exact pricing? Request a quote →</button></div><form onSubmit={send} className="flex gap-2 p-3"><Input value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask about services..." className="border-white/10 bg-white text-[#17372f]" /><Button size="icon" aria-label="Send question"><Send className="size-4" /></Button></form></> : mode === 'lead' ? <form onSubmit={submitLead} className="space-y-3 bg-[#fbf2e6] p-4 text-[#17372f]"><p className="font-bold">Get a clear quote</p><p className="text-xs leading-5 text-[#17372f]/65">Tell us what you need. A service specialist will reply with the next step.</p><Input name="name" placeholder="Your name" required /><Input name="email" type="email" placeholder="Email address" required /><Input name="phone" placeholder="Phone number" /><Input name="service" placeholder="Service needed" required /><div className="flex gap-2"><Button type="button" variant="outline" onClick={() => setMode('chat')}>Back</Button><Button className="flex-1">Request quote</Button></div></form> : <div className="grid min-h-[300px] place-items-center bg-[#fbf2e6] p-8 text-center text-[#17372f]"><div><CheckCircle2 className="mx-auto size-10 text-[#638d2d]" /><p className="mt-4 text-xl font-black">Request received</p><p className="mt-2 text-sm leading-6 text-[#17372f]/65">We will review your details and reply shortly with a clear next step.</p></div></div>}</div>;
+}

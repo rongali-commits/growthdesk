@@ -1,0 +1,20 @@
+import Link from 'next/link';
+import { ArrowUpRight, CheckCircle2, CircleDollarSign, FileCheck2, FolderOpen, MessageSquareText } from 'lucide-react';
+import { AppShell } from '@/components/app-shell';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { listProjects } from '@/db/store';
+
+export const dynamic = 'force-dynamic';
+const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+
+export default async function ClientsPage() {
+  const projects = await listProjects();
+  return <AppShell active="clients" eyebrow="Client delivery" title="A calmer place to get work approved." subtitle="Give every customer a branded workspace for progress, files, decisions, invoices, and updates.">
+    <div className="grid gap-3 sm:grid-cols-3">{[[FolderOpen, projects.length, 'Active workspaces'], [FileCheck2, projects.reduce((sum, item) => sum + item.deliverables, 0), 'Deliverables ready'], [CircleDollarSign, money(projects.reduce((sum, item) => sum + item.value, 0)), 'Project value']].map(([Icon, value, label]) => { const Item = Icon as typeof FolderOpen; return <Card key={String(label)} className="border-0 ring-1 ring-foreground/[0.075]"><CardContent className="flex items-center gap-4 p-5"><span className="grid size-11 place-items-center rounded-2xl bg-primary/20"><Item className="size-5 text-[#587d24]" /></span><div><p className="text-2xl font-black">{String(value)}</p><p className="text-xs text-muted-foreground">{String(label)}</p></div></CardContent></Card>})}</div>
+    <div className="mt-4 grid gap-4 xl:grid-cols-3">{projects.map((project) => <Card key={project.id} className="group border-0 ring-1 ring-foreground/[0.075]"><CardHeader><div className="flex items-center justify-between"><Badge variant="outline">{project.status}</Badge><Button render={<Link href={`/portal/${project.token}`} />} variant="ghost" size="icon" aria-label={`Open ${project.project} portal`}><ArrowUpRight className="size-4" /></Button></div><CardTitle className="mt-3">{project.project}</CardTitle><CardDescription>{project.client}</CardDescription></CardHeader><CardContent><div className="flex items-center justify-between text-xs"><span className="font-medium">Project progress</span><span className="text-muted-foreground">{project.progress}%</span></div><Progress value={project.progress} className="mt-2 h-2" /><div className="mt-5 space-y-3 rounded-xl bg-muted/55 p-4"><div className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 size-4 text-[#628d28]" /><div><p className="text-xs font-semibold">Next client decision</p><p className="mt-0.5 text-xs text-muted-foreground">{project.next_action}</p></div></div><div className="flex items-start gap-2"><FileCheck2 className="mt-0.5 size-4 text-muted-foreground" /><p className="text-xs">{project.deliverables} deliverables ready</p></div><div className="flex items-start gap-2"><CircleDollarSign className="mt-0.5 size-4 text-muted-foreground" /><p className="text-xs">{money(project.value)} · {project.invoice_status}</p></div></div><Button render={<Link href={`/portal/${project.token}`} />} variant="outline" className="mt-4 w-full">Open client portal</Button></CardContent></Card>)}</div>
+    <Card className="mt-4 border-0 ring-1 ring-foreground/[0.075]"><CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center"><span className="grid size-11 place-items-center rounded-2xl bg-[#15251f] text-primary"><MessageSquareText className="size-5" /></span><div className="flex-1"><p className="font-bold">Client communication stays with the work</p><p className="mt-1 text-sm text-muted-foreground">Updates, approvals, deliverables, and invoice history remain visible to both sides.</p></div><Badge className="w-fit bg-primary/18 text-[#466b13]">3 updates due today</Badge></CardContent></Card>
+  </AppShell>;
+}
