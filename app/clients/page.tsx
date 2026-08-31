@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/plain-link';
 import { ArrowUpRight, CheckCircle2, CircleDollarSign, FileCheck2, FolderOpen, MessageSquareText } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { Badge } from '@/components/ui/badge';

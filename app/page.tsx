@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ArrowRight, Bot, BriefcaseBusiness, CalendarCheck2, CircleDollarSign, Clock3, MessageSquareText, Sparkles, Star } from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
@@ -6,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Link } from '@/components/plain-link';
 import { listAutomations, listLeads, listProjects, listReviews } from '@/db/store';
 
 export const dynamic = 'force-dynamic';

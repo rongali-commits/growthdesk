@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { Bell, BriefcaseBusiness, Inbox, LayoutDashboard, LineChart, Search, Settings, Sparkles, Star, UsersRound, WandSparkles } from 'lucide-react';
+import { BriefcaseBusiness, Inbox, LayoutDashboard, LineChart, Search, Settings, Sparkles, Star, UsersRound, WandSparkles } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { NewLeadDialog } from '@/components/new-lead-dialog';
+import { NotificationCenter } from '@/components/notification-center';
+import { Link } from '@/components/plain-link';
 
 const items = [
   ['dashboard', 'Command center', '/', LayoutDashboard],
@@ -41,7 +41,7 @@ export function AppShell({ active, eyebrow, title, subtitle, actions, children }
       <header className="sticky top-0 z-20 flex h-[72px] items-center gap-3 border-b border-border/70 bg-background/88 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
         <Link href="/" className="grid size-9 place-items-center rounded-xl bg-primary text-xs font-black text-primary-foreground lg:hidden">GD</Link>
         <div className="hidden h-9 w-[min(36vw,380px)] items-center gap-2.5 rounded-xl border border-border bg-card px-3 text-sm text-muted-foreground md:flex"><Search className="size-4" /><span>Search customers, projects, conversations...</span></div>
-        <div className="ml-auto flex items-center gap-2"><Button variant="outline" size="icon-lg" aria-label="Notifications" className="rounded-xl"><Bell className="size-4" /></Button>{actions ?? <NewLeadDialog />}<span className="ml-1 grid size-9 place-items-center rounded-xl bg-[#f3d9c7] text-xs font-bold text-[#70452d]">MC</span></div>
+        <div className="ml-auto flex items-center gap-2"><NotificationCenter />{actions ?? <NewLeadDialog />}<span className="ml-1 grid size-9 place-items-center rounded-xl bg-[#f3d9c7] text-xs font-bold text-[#70452d]">MC</span></div>
       </header>
       <section className="mx-auto w-full max-w-[1540px] px-4 py-7 pb-24 sm:px-6 lg:px-8 lg:py-9">
         <div className="mb-7"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"><span className="size-2 rounded-full bg-primary shadow-[0_0_0_5px_rgba(184,255,78,0.16)]" />{eyebrow}</div><h1 className="mt-3 font-heading text-[clamp(2rem,4vw,3.3rem)] font-bold leading-[0.96] tracking-[-0.055em]">{title}</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{subtitle}</p></div>

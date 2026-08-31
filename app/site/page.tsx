@@ -1,11 +1,149 @@
-import Link from 'next/link';
-import { ArrowRight, Check, Clock3, MapPin, ShieldCheck, Sparkles, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Link } from '@/components/plain-link';
+import {
+  Check,
+  Clock3,
+  MapPin,
+  ShieldCheck,
+  Sparkles,
+  Star,
+} from 'lucide-react';
+import {
+  HeaderQuoteButton,
+  HeroActions,
+} from '@/components/customer-site-actions';
 import { WebsiteAssistant } from '@/components/website-assistant';
 
 export default function CustomerSitePage() {
-  return <main className="min-h-screen bg-[#fbf2e6] text-[#15392f]"><header className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-6"><Link href="/site" className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-full bg-[#f59b52] font-black">N</span><span className="font-heading text-lg font-black">Northstar Services</span></Link><nav className="ml-auto hidden items-center gap-6 text-sm font-semibold md:flex"><a href="#services">Services</a><a href="#reviews">Reviews</a><a href="#how">How it works</a></nav><Button className="ml-auto rounded-full bg-[#15392f] px-5 text-white md:ml-4">Get a quote</Button></header>
-    <section className="mx-auto grid min-h-[650px] max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[1.05fr_0.95fr]"><div><div className="inline-flex items-center gap-2 rounded-full border border-[#15392f]/15 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em]"><span className="size-2 rounded-full bg-[#a8d96e]" />Trusted local care</div><h1 className="mt-6 max-w-3xl font-heading text-[clamp(3.3rem,7vw,6.8rem)] font-black leading-[0.84] tracking-[-0.075em]">A cleaner space.<span className="block text-[#eb8744]">A lighter week.</span></h1><p className="mt-7 max-w-xl text-lg leading-8 text-[#15392f]/68">Reliable home and office care with clear pricing, dependable teams, and a simple customer experience from quote to completion.</p><div className="mt-8 flex flex-wrap gap-3"><Button className="h-12 rounded-full bg-[#15392f] px-6 text-white">Get my free quote <ArrowRight className="size-4" /></Button><Button variant="outline" className="h-12 rounded-full border-[#15392f]/20 bg-transparent px-6">Explore services</Button></div><div className="mt-8 flex flex-wrap gap-5 text-xs font-semibold">{[[ShieldCheck, 'Insured teams'], [Clock3, 'Flexible plans'], [MapPin, 'Local support']].map(([Icon, label]) => { const Item = Icon as typeof ShieldCheck; return <span key={String(label)} className="flex items-center gap-1.5"><Item className="size-4 text-[#6d9637]" />{String(label)}</span>})}</div></div>
-      <div className="relative overflow-hidden rounded-[3rem] bg-[#15392f] p-6 text-white shadow-[0_40px_90px_rgba(21,57,47,0.2)]"><div className="absolute -right-20 -top-20 size-72 rounded-full bg-[#f59b52]/25 blur-3xl" /><div className="relative rounded-[2rem] bg-[#f6fbf5] p-6 text-[#15392f]"><div className="flex items-center justify-between"><span className="text-xs font-black uppercase tracking-[0.15em]">This week</span><Sparkles className="size-5 text-[#ec8d4d]" /></div><p className="mt-12 text-4xl font-black tracking-[-0.05em]">Your home, ready for what matters.</p><div className="mt-8 grid gap-3 sm:grid-cols-2">{[['Tuesday · 9:00', 'Deep clean'], ['Friday · 14:30', 'Weekly care']].map(([time, service]) => <div key={time} className="rounded-2xl border border-[#15392f]/10 bg-white p-4"><Check className="size-4 text-[#6d9637]" /><p className="mt-5 font-bold">{service}</p><p className="mt-1 text-xs text-[#15392f]/55">{time}</p></div>)}</div></div><div className="relative mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4"><div><p className="text-sm font-bold">4.9 customer rating</p><div className="mt-1 flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-3 fill-[#b8ff4e] text-[#b8ff4e]" />)}</div></div><span className="text-xs text-white/55">Verified service visits</span></div></div></section>
-    <section id="services" className="bg-[#15392f] px-5 py-20 text-white"><div className="mx-auto max-w-7xl"><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#b8ff4e]">Services built around your space</p><div className="mt-8 grid gap-4 md:grid-cols-3">{[['Home care', 'Recurring cleaning with the same clear checklist and quality standard.'], ['Deep cleaning', 'Detailed, top-to-bottom attention for seasonal resets and special occasions.'], ['Office plans', 'Reliable commercial care with scheduling, updates, and one accountable contact.']].map(([title, copy], index) => <article key={title} className="rounded-3xl border border-white/10 bg-white/5 p-6"><span className="text-xs font-bold text-[#b8ff4e]">0{index + 1}</span><h2 className="mt-12 text-2xl font-black">{title}</h2><p className="mt-3 text-sm leading-6 text-white/58">{copy}</p></article>)}</div></div></section><WebsiteAssistant /></main>;
+  return (
+    <main className="min-h-screen bg-[#fbf2e6] text-[#15392f]">
+      <header className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-6">
+        <Link href="/site" className="flex items-center gap-3">
+          <span className="grid size-10 place-items-center rounded-full bg-[#f59b52] font-black">
+            N
+          </span>
+          <span className="font-heading text-lg font-black">
+            Northstar Services
+          </span>
+        </Link>
+        <nav className="ml-auto hidden items-center gap-6 text-sm font-semibold md:flex">
+          <a href="#services">Services</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#how">How it works</a>
+        </nav>
+        <HeaderQuoteButton />
+      </header>
+      <section className="mx-auto grid min-h-[650px] max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#15392f]/15 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em]">
+            <span className="size-2 rounded-full bg-[#a8d96e]" />
+            Trusted local care
+          </div>
+          <h1 className="mt-6 max-w-3xl font-heading text-[clamp(3.3rem,7vw,6.8rem)] font-black leading-[0.84] tracking-[-0.075em]">
+            A cleaner space.
+            <span className="block text-[#eb8744]">A lighter week.</span>
+          </h1>
+          <p className="mt-7 max-w-xl text-lg leading-8 text-[#15392f]/68">
+            Reliable home and office care with clear pricing, dependable teams,
+            and a simple customer experience from quote to completion.
+          </p>
+          <HeroActions />
+          <div className="mt-8 flex flex-wrap gap-5 text-xs font-semibold">
+            {[
+              [ShieldCheck, 'Insured teams'],
+              [Clock3, 'Flexible plans'],
+              [MapPin, 'Local support'],
+            ].map(([Icon, label]) => {
+              const Item = Icon as typeof ShieldCheck;
+              return (
+                <span key={String(label)} className="flex items-center gap-1.5">
+                  <Item className="size-4 text-[#6d9637]" />
+                  {String(label)}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+        <div className="relative overflow-hidden rounded-[3rem] bg-[#15392f] p-6 text-white shadow-[0_40px_90px_rgba(21,57,47,0.2)]">
+          <div className="absolute -right-20 -top-20 size-72 rounded-full bg-[#f59b52]/25 blur-3xl" />
+          <div className="relative rounded-[2rem] bg-[#f6fbf5] p-6 text-[#15392f]">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-[0.15em]">
+                This week
+              </span>
+              <Sparkles className="size-5 text-[#ec8d4d]" />
+            </div>
+            <p className="mt-12 text-4xl font-black tracking-[-0.05em]">
+              Your home, ready for what matters.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {[
+                ['Tuesday · 9:00', 'Deep clean'],
+                ['Friday · 14:30', 'Weekly care'],
+              ].map(([time, service]) => (
+                <div
+                  key={time}
+                  className="rounded-2xl border border-[#15392f]/10 bg-white p-4"
+                >
+                  <Check className="size-4 text-[#6d9637]" />
+                  <p className="mt-5 font-bold">{service}</p>
+                  <p className="mt-1 text-xs text-[#15392f]/55">{time}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div>
+              <p className="text-sm font-bold">4.9 customer rating</p>
+              <div className="mt-1 flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="size-3 fill-[#b8ff4e] text-[#b8ff4e]"
+                  />
+                ))}
+              </div>
+            </div>
+            <span className="text-xs text-white/55">
+              Verified service visits
+            </span>
+          </div>
+        </div>
+      </section>
+      <section id="services" className="bg-[#15392f] px-5 py-20 text-white">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#b8ff4e]">
+            Services built around your space
+          </p>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              [
+                'Home care',
+                'Recurring cleaning with the same clear checklist and quality standard.',
+              ],
+              [
+                'Deep cleaning',
+                'Detailed, top-to-bottom attention for seasonal resets and special occasions.',
+              ],
+              [
+                'Office plans',
+                'Reliable commercial care with scheduling, updates, and one accountable contact.',
+              ],
+            ].map(([title, copy], index) => (
+              <article
+                key={title}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6"
+              >
+                <span className="text-xs font-bold text-[#b8ff4e]">
+                  0{index + 1}
+                </span>
+                <h2 className="mt-12 text-2xl font-black">{title}</h2>
+                <p className="mt-3 text-sm leading-6 text-white/58">{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <WebsiteAssistant />
+    </main>
+  );
 }
