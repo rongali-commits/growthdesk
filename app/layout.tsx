@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { accessConfig } from '@/lib/access';
+export const dynamic = 'force-dynamic';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -13,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'GrowthDesk | The complete client-service operating system',
+  title: 'GrowthDesk | Client operations source foundation',
   description:
-    'Capture leads, automate follow-up, deliver client work, and collect reviews from one beautifully connected workspace.',
+    'A developer foundation for lead capture and client operations. Provider integrations and delivery features require implementation.',
 };
 
 export default function RootLayout({
@@ -26,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {accessConfig().demo ? <div className="relative z-50 bg-[#15251f] px-4 py-2 text-center text-sm text-white">Fictional demonstration. No real appointments, messages, payments or submissions.</div> : null}
         {children}
       </body>
     </html>

@@ -20,6 +20,7 @@ export function NewLeadDialog({ source = 'Manual' }: { source?: string }) {
     setSaving(true);
     setError('');
     const data = Object.fromEntries(new FormData(event.currentTarget));
+    try {
     const response = await fetch('/api/leads', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...data, source, value: Number(data.value || 0) }) });
     if (!response.ok) {
       const body = await response.json().catch(() => ({ error: 'Could not save this lead.' })) as { error?: string };
@@ -30,6 +31,8 @@ export function NewLeadDialog({ source = 'Manual' }: { source?: string }) {
     setSaving(false);
     setOpen(false);
     router.refresh();
+    } catch { setError('Connection interrupted. Check the lead list before retrying.'); }
+    finally { setSaving(false); }
   }
 
   return (
@@ -41,7 +44,7 @@ export function NewLeadDialog({ source = 'Manual' }: { source?: string }) {
         <form onSubmit={submit}>
           <DialogHeader>
             <DialogTitle>Add a new opportunity</DialogTitle>
-            <DialogDescription>Capture the customer and service details. GrowthDesk starts the follow-up workflow immediately.</DialogDescription>
+            <DialogDescription>Capture the customer and service details. Save a record for your team to follow up. Automated messaging requires a separate provider integration.</DialogDescription>
           </DialogHeader>
           <div className="my-5 grid gap-4">
             <div className="grid gap-1.5"><Label htmlFor="lead-name">Name</Label><Input id="lead-name" name="name" placeholder="Customer name" required /></div>
@@ -51,7 +54,7 @@ export function NewLeadDialog({ source = 'Manual' }: { source?: string }) {
               <div className="grid gap-1.5"><Label htmlFor="lead-value">Est. value</Label><Input id="lead-value" name="value" type="number" min="0" placeholder="1200" /></div>
             </div>
             <div className="grid gap-1.5"><Label htmlFor="lead-service">Service</Label><Input id="lead-service" name="service" placeholder="What are they interested in?" required /></div>
-            {error ? <p className="text-sm text-destructive">{error}</p> : null}
+            {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
           </div>
           <DialogFooter><Button type="submit" disabled={saving}>{saving ? 'Saving...' : 'Create lead'}</Button></DialogFooter>
         </form>

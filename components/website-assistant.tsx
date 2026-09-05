@@ -16,7 +16,7 @@ function answer(question: string) {
     text.includes('book') ||
     text.includes('schedule')
   )
-    return 'We currently have appointments available this week. Share the service and preferred date, and our team will confirm the best time.';
+    return 'Availability must be confirmed by the team. Share the service and preferred date to request a time.';
   if (text.includes('office') || text.includes('commercial'))
     return 'Yes. Our office care plans include scheduled cleaning, supplies, quality checks, and one accountable service lead.';
   if (text.includes('move'))
@@ -34,6 +34,8 @@ export function WebsiteAssistant() {
     },
   ]);
   const [question, setQuestion] = useState('');
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
   useEffect(() => {
     const showQuote = () => {
       setOpen(true);
@@ -56,12 +58,17 @@ export function WebsiteAssistant() {
   async function submitLead(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.currentTarget));
-    const response = await fetch('/api/leads', {
+    setSaving(true); setError('');
+    try {
+    const response = await fetch('/api/enquiries', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ ...data, source: 'Website assistant' }),
+      body: JSON.stringify({ ...data, consent: data.consent === 'on' }),
     });
-    if (response.ok) setMode('done');
+    if (response.ok) { setError(''); setMode('done'); }
+    else { const result = await response.json().catch(() => ({})) as { error?: string }; setError(result.error ?? 'Could not save the enquiry. Please try again.'); }
+    } catch { setError('Connection interrupted. Please contact the business if you are unsure whether your enquiry arrived.'); }
+    finally { setSaving(false); }
   }
   if (!open)
     return (
@@ -91,6 +98,7 @@ export function WebsiteAssistant() {
           <X className="size-4" />
         </button>
       </div>
+      {error ? <p role="alert" className="p-4 text-sm">{error}</p> : null}
       {mode === 'chat' ? (
         <>
           <div className="h-[330px] space-y-3 overflow-y-auto bg-[#fbf2e6] p-4 text-[#17372f]">
@@ -140,6 +148,8 @@ export function WebsiteAssistant() {
           />
           <Input name="phone" placeholder="Phone number" />
           <Input name="service" placeholder="Service needed" required />
+          <label className="flex gap-2 text-sm"><input name="consent" type="checkbox" required />I agree to be contacted about this enquiry.</label>
+          <input name="website" aria-label="Leave blank" tabIndex={-1} autoComplete="off" className="hidden" />
           <div className="flex gap-2">
             <Button
               type="button"
@@ -148,7 +158,7 @@ export function WebsiteAssistant() {
             >
               Back
             </Button>
-            <Button className="flex-1">Request quote</Button>
+            <Button disabled={saving} className="flex-1">{saving ? 'Sending...' : 'Request quote'}</Button>
           </div>
         </form>
       ) : (

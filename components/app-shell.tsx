@@ -1,3 +1,4 @@
+import { accessConfig } from '@/lib/access';
 import { BriefcaseBusiness, Inbox, LayoutDashboard, LineChart, Search, Settings, Sparkles, Star, UsersRound, WandSparkles } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +16,7 @@ const items = [
 ] as const;
 
 export function AppShell({ active, eyebrow, title, subtitle, actions, children }: { active: string; eyebrow: string; title: string; subtitle: string; actions?: React.ReactNode; children: React.ReactNode }) {
+  const { demo } = accessConfig();
   return (
     <main className="min-h-screen bg-background text-foreground lg:pl-[252px]">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[252px] flex-col border-r border-sidebar-border bg-sidebar px-4 py-5 lg:flex">
@@ -33,18 +35,18 @@ export function AppShell({ active, eyebrow, title, subtitle, actions, children }
           <Link href="/reports" className={`flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium ${active === 'reports' ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'text-sidebar-foreground/72 hover:bg-sidebar-accent'}`}><LineChart className="size-[17px]" />Reports</Link>
           <Link href="/settings" className={`flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium ${active === 'settings' ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'text-sidebar-foreground/72 hover:bg-sidebar-accent'}`}><Settings className="size-[17px]" />Settings</Link>
           <div className="mt-3 rounded-2xl bg-[#15251f] p-4 text-white">
-            <div className="flex items-center justify-between"><span className="grid size-8 place-items-center rounded-lg bg-primary text-[#102019]"><Sparkles className="size-4" /></span><Badge className="bg-white/10 text-white">LIVE</Badge></div>
-            <p className="mt-3 text-sm font-semibold">Revenue engine is on</p><p className="mt-1 text-xs leading-5 text-white/58">Every customer handoff is connected.</p>
+            <div className="flex items-center justify-between"><span className="grid size-8 place-items-center rounded-lg bg-primary text-[#102019]"><Sparkles className="size-4" /></span><Badge className="bg-white/10 text-white">FOUNDATION</Badge></div>
+            <p className="mt-3 text-sm font-semibold">Connected workspace foundation</p><p className="mt-1 text-xs leading-5 text-white/58">Messaging providers require a separate integration.</p>
           </div>
         </div>
       </aside>
       <header className="sticky top-0 z-20 flex h-[72px] items-center gap-3 border-b border-border/70 bg-background/88 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
         <Link href="/" className="grid size-9 place-items-center rounded-xl bg-primary text-xs font-black text-primary-foreground lg:hidden">GD</Link>
-        <div className="hidden h-9 w-[min(36vw,380px)] items-center gap-2.5 rounded-xl border border-border bg-card px-3 text-sm text-muted-foreground md:flex"><Search className="size-4" /><span>Search customers, projects, conversations...</span></div>
+        <div className="hidden h-9 w-[min(36vw,380px)] items-center gap-2.5 rounded-xl border border-border bg-card px-3 text-sm text-muted-foreground md:flex"><Search className="size-4" /><span>Your customer workspace</span></div>
         <div className="ml-auto flex items-center gap-2"><NotificationCenter />{actions ?? <NewLeadDialog />}<span className="ml-1 grid size-9 place-items-center rounded-xl bg-[#f3d9c7] text-xs font-bold text-[#70452d]">MC</span></div>
       </header>
       <section className="mx-auto w-full max-w-[1540px] px-4 py-7 pb-24 sm:px-6 lg:px-8 lg:py-9">
-        <div className="mb-7"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"><span className="size-2 rounded-full bg-primary shadow-[0_0_0_5px_rgba(184,255,78,0.16)]" />{eyebrow}</div><h1 className="mt-3 font-heading text-[clamp(2rem,4vw,3.3rem)] font-bold leading-[0.96] tracking-[-0.055em]">{title}</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{subtitle}</p></div>
+        <div className="mb-5 rounded-xl border bg-card p-4 text-sm leading-6">{demo ? "Read-only demo with fictional records. No messages are sent and changes are not saved." : "Owner workspace. Email, SMS, payments and inbox delivery require configured integrations."}{!demo ? <form action="/api/auth/logout" method="post"><button className="mt-2 underline" type="submit">Sign out</button></form> : null}</div><div className="mb-7"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"><span className="size-2 rounded-full bg-primary shadow-[0_0_0_5px_rgba(184,255,78,0.16)]" />{eyebrow}</div><h1 className="mt-3 font-heading text-[clamp(2rem,4vw,3.3rem)] font-bold leading-[0.96] tracking-[-0.055em]">{title}</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{subtitle}</p></div>
         {children}
       </section>
       <nav className="fixed inset-x-3 bottom-3 z-40 flex justify-around rounded-2xl border border-border bg-card/96 p-2 shadow-xl backdrop-blur lg:hidden">

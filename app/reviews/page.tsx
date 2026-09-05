@@ -1,3 +1,4 @@
+import { requireStaffPage } from '@/lib/access';
 import { MessageCircleHeart, Send, ShieldCheck, Star, TrendingUp } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { ReviewActions } from '@/components/review-actions';
@@ -8,6 +9,7 @@ import { listReviews } from '@/db/store';
 export const dynamic = 'force-dynamic';
 
 export default async function ReviewsPage() {
+  await requireStaffPage();
   const reviews = await listReviews(); const average = reviews.reduce((sum, item) => sum + item.rating, 0) / Math.max(1, reviews.length);
   return <AppShell active="reviews" eyebrow="Customer reputation" title="Turn great delivery into public trust." subtitle="Request honest feedback, protect unhappy customers with a private recovery path, and publish approved testimonials.">
     <div className="grid gap-3 sm:grid-cols-4">{[[Star, average.toFixed(1), 'Average rating'], [Send, '61', 'Requests sent'], [MessageCircleHeart, reviews.filter((item) => item.status === 'published').length, 'Published'], [ShieldCheck, reviews.filter((item) => item.status === 'private').length, 'Private recovery']].map(([Icon, value, label]) => { const Item = Icon as typeof Star; return <Card key={String(label)} className="border-0 ring-1 ring-foreground/[0.075]"><CardContent className="p-5"><Item className="size-4 text-[#628d28]" /><p className="mt-3 text-2xl font-black">{String(value)}</p><p className="text-xs text-muted-foreground">{String(label)}</p></CardContent></Card>})}</div>

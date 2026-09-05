@@ -14,4 +14,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx wrangler dev --config dist/server/wrangler.json --ip 0.0.0.0 --port ${PORT:-3000} --persist-to /app/runtime --log-level info --show-interactive-dev-session=false"]
+CMD ["node", "scripts/start-railway.mjs"]

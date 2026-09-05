@@ -1,3 +1,4 @@
+import { requireStaffPage } from '@/lib/access';
 import { Filter, Mail, Phone, TrendingUp } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { LeadStatusSelect } from '@/components/lead-status-select';
@@ -16,6 +17,7 @@ const money = (value: number) =>
   }).format(value);
 
 export default async function LeadsPage() {
+  await requireStaffPage();
   const leads = await listLeads();
   return (
     <AppShell

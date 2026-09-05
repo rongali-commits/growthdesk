@@ -7,8 +7,19 @@ import { Label } from '@/components/ui/label';
 
 export function SettingsForm({ settings }: { settings: Record<string, string> }) {
   const [saved, setSaved] = useState(false);
-  async function submit(event: SubmitEvent<HTMLFormElement>) { event.preventDefault(); setSaved(false); const body = Object.fromEntries(new FormData(event.currentTarget)); await fetch('/api/settings', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }); setSaved(true); }
+  const [error, setError] = useState('');
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault(); setSaved(false); setError('');
+    const body = Object.fromEntries(new FormData(event.currentTarget));
+    try {
+      const response = await fetch('/api/settings', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) { setError(result.error ?? 'Could not save settings.'); return; }
+      setSaved(true);
+    } catch { setError('Connection failed. Your settings were not saved.'); }
+  }
   return <form onSubmit={submit} className="grid gap-5">
+    {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="grid gap-1.5"><Label htmlFor="business_name">Business name</Label><Input id="business_name" name="business_name" defaultValue={settings.business_name} required /></div>
       <div className="grid gap-1.5"><Label htmlFor="support_email">Support email</Label><Input id="support_email" name="support_email" type="email" defaultValue={settings.support_email} required /></div>

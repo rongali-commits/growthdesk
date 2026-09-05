@@ -1,12 +1,17 @@
 import { createLead, listLeads } from '@/db/store';
+import { staffApi, readJson, failure } from '@/lib/access';
+import { cleanLead } from '@/lib/lead-input';
 
-export async function GET() {
-  return Response.json(await listLeads());
+export async function GET(request: Request) {
+  const denied = await staffApi(request);
+  if (denied) return denied;
+  return Response.json(await listLeads(), { headers: { 'Cache-Control': 'no-store' } });
 }
 
 export async function POST(request: Request) {
-  const body = await request.json() as { name?: string; email?: string; phone?: string; service?: string; value?: number; source?: string };
-  if (!body.name?.trim() || !body.email?.includes('@') || !body.service?.trim()) return Response.json({ error: 'Name, a valid email, and service are required.' }, { status: 400 });
-  const lead = await createLead({ name: body.name.trim(), email: body.email.trim(), phone: body.phone?.trim(), service: body.service.trim(), value: Math.max(0, Number(body.value || 0)), source: body.source });
-  return Response.json(lead, { status: 201 });
+  const denied = await staffApi(request, true);
+  if (denied) return denied;
+  const lead = cleanLead(await readJson(request));
+  if (!lead) return failure('Enter a name, valid email, service, and a finite nonnegative value.', 400);
+  return Response.json(await createLead(lead), { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }

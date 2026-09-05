@@ -1,0 +1,38 @@
+GROWTHDESK SINGLE-ORGANIZATION COMMERCIAL LICENSE
+Version 1.0, August 2026
+
+Copyright 2026 Noerong. All rights reserved.
+
+This license is granted to the individual or legal organization that purchases the GrowthDesk source product from an authorized Noerong sales channel (the Licensee).
+
+1. Permitted use
+
+The Licensee may use, modify, deploy, and operate the source code for one legal organization and its owned brands. The Licensee may engage employees or contractors to modify the code solely for that organization, provided those parties protect the source code and use it only for the licensed organization.
+
+2. Prohibited use
+
+The Licensee may not resell, sublicense, redistribute, publish, share, or offer the source code or a substantially similar derivative as a template, source-code product, software kit, marketplace product, or competing white-label product. The Licensee may not make the repository publicly accessible.
+
+3. Client-service use
+
+An agency or consultant may use the product to operate its own business. Deploying separate copies for unrelated client organizations requires a separate license for each client unless Noerong grants a written multi-client or resale license.
+
+4. Third-party software
+
+Third-party packages remain governed by their respective licenses. This license applies only to the original GrowthDesk source, documentation, and assets supplied by Noerong.
+
+5. No included services
+
+Hosting, domains, third-party accounts, API usage, installation, customization, integration, migration, maintenance, and support are not included unless separately stated in writing at the time of purchase.
+
+6. Warranty and liability
+
+The product is provided as is, without warranties of merchantability, fitness for a particular purpose, or non-infringement. To the maximum extent permitted by law, Noerong is not liable for indirect, incidental, special, consequential, or business-interruption damages. The Licensee is responsible for security review, authentication, access control, privacy compliance, backups, and testing before handling real customer data.
+
+7. Termination
+
+The license terminates automatically if the Licensee materially violates these terms. Upon termination, the Licensee must stop using and delete the supplied source code and documentation.
+
+8. Additional rights
+
+Any rights not expressly granted are reserved by Noerong. A broader license is valid only when granted in writing by Noerong.

@@ -7,3 +7,10 @@ dist-stale-*
 .wrangler
 *.tar.gz
 npm-debug.log*
+.env*
+.dev.vars*
+runtime*
+output
+outputs
+sales-assets
+tmp

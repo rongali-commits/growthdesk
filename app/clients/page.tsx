@@ -1,3 +1,4 @@
+import { requireStaffPage } from '@/lib/access';
 import { Link } from '@/components/plain-link';
 import { ArrowUpRight, CheckCircle2, CircleDollarSign, FileCheck2, FolderOpen, MessageSquareText } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
 
 export default async function ClientsPage() {
+  await requireStaffPage();
   const projects = await listProjects();
   return <AppShell active="clients" eyebrow="Client delivery" title="A calmer place to get work approved." subtitle="Give every customer a branded workspace for progress, files, decisions, invoices, and updates.">
     <div className="grid gap-3 sm:grid-cols-3">{[[FolderOpen, projects.length, 'Active workspaces'], [FileCheck2, projects.reduce((sum, item) => sum + item.deliverables, 0), 'Deliverables ready'], [CircleDollarSign, money(projects.reduce((sum, item) => sum + item.value, 0)), 'Project value']].map(([Icon, value, label]) => { const Item = Icon as typeof FolderOpen; return <Card key={String(label)} className="border-0 ring-1 ring-foreground/[0.075]"><CardContent className="flex items-center gap-4 p-5"><span className="grid size-11 place-items-center rounded-2xl bg-primary/20"><Item className="size-5 text-[#587d24]" /></span><div><p className="text-2xl font-black">{String(value)}</p><p className="text-xs text-muted-foreground">{String(label)}</p></div></CardContent></Card>})}</div>
