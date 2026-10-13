@@ -1,5 +1,9 @@
 # GrowthDesk 1.1: client operations developer foundation
 
+[![Checks](https://github.com/rongali-commits/growthdesk/actions/workflows/ci.yml/badge.svg)](https://github.com/rongali-commits/growthdesk/actions/workflows/ci.yml)
+
+[Case study](https://noerong.com/projects/growthdesk) Â· [Live demo](https://noerong.com/projects/growthdesk) Â· [Contact](https://noerong.com/contact)
+
 GrowthDesk is a source foundation for developers building a single-business client workspace. It is not a complete CRM or a subscription SaaS service.
 
 ## Implemented and tested
